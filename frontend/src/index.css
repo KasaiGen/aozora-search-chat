@@ -11,3 +11,63 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.speechBubble {
+  position: relative;
+  display: block;
+  padding: 16px;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+  background-color: #dbfdff;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #000000;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.speechBubble::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-style: solid;
+  border-width: 0 20px 20px 0;
+  border-color: transparent #ffffff transparent transparent;
+  translate: -100% -50%;
+}
+
+.speechBubble::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-style: solid;
+  border-width: 0 15.2px 15.2px 0;
+  border-color: transparent #dbfdff transparent transparent;
+  translate: -100% calc(-50% - 0.4px);
+}
+
+.speechBubble.user {
+  border: 2px solid #3b82f6;
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.speechBubble.user::before {
+  left: auto;
+  right: 0;
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent transparent #3b82f6;
+  translate: 100% -50%;
+}
+
+.speechBubble.user::after {
+  left: auto;
+  right: 0;
+  border-width: 0 0 15.2px 15.2px;
+  border-color: transparent transparent transparent #3b82f6;
+  translate: 100% calc(-50% - 0.4px);
+}
+

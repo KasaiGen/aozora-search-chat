@@ -52,9 +52,9 @@ function App() {
       let resultContent = ''
 
       if (books.length > 0) {
-        resultContent += `📚 作品が見つかりました（${books.length}件）:\n\n`
+        resultContent += `作品が見つかりました（${books.length}件）:\n\n`
         books.slice(0, 5).forEach((book, index) => {
-          resultContent += `${index + 1}. **${book.title}**\n`
+          resultContent += `${index + 1}. ${book.title}\n`
           resultContent += `   作者: ${book.author}\n`
           if (book.book_id) {
             resultContent += `   ID: ${book.book_id}\n`
@@ -67,9 +67,9 @@ function App() {
       }
 
       if (authors.length > 0) {
-        resultContent += `👤 作者が見つかりました（${authors.length}件）:\n\n`
+        resultContent += `作者が見つかりました（${authors.length}件）:\n\n`
         authors.slice(0, 5).forEach((author, index) => {
-          resultContent += `${index + 1}. **${author.name}**\n`
+          resultContent += `${index + 1}. ${author.name}\n`
           if (author.name_yomi) {
             resultContent += `   読み: ${author.name_yomi}\n`
           }
@@ -111,33 +111,39 @@ function App() {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* ヘッダー */}
-      <header className="bg-blue-600 text-white p-4 shadow-md">
-        <h1 className="text-2xl font-bold">青空文庫検索システム</h1>
+      <header className="bg-blue-600 text-white p-5 shadow-md">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">青空文庫検索システム</h1>
+          <p className="text-blue-100 text-sm mt-1">作品や作者を検索できます</p>
+        </div>
       </header>
 
       {/* チャットエリア */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message: Message) => {
-          // @ts-ignore - key is a special React prop, not part of component props
-          return <ChatMessage key={message.id} message={message} />;
-        })}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-white rounded-lg p-4 shadow-md max-w-md">
-              <div className="flex space-x-2">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' } as React.CSSProperties}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' } as React.CSSProperties}></div>
+      <div className="flex-1 overflow-y-auto px-4 md:px-6 py-6">
+        <div className="max-w-4xl mx-auto">
+          {messages.map((message: Message) => {
+            return <ChatMessage key={message.id} message={message} />;
+          })}
+          {isLoading && (
+            <div className="flex items-end mb-4">
+              <div className="bg-white rounded-2xl rounded-bl-sm px-4 py-3 shadow-lg border border-gray-200">
+                <div className="flex space-x-2">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' } as React.CSSProperties}></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' } as React.CSSProperties}></div>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
+          )}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
       {/* 入力エリア */}
-      <div className="border-t bg-white p-4">
-        <SearchInput onSearch={handleSearch} disabled={isLoading} />
+      <div className="border-t border-gray-200 bg-white p-4 shadow-md">
+        <div className="max-w-4xl mx-auto">
+          <SearchInput onSearch={handleSearch} disabled={isLoading} />
+        </div>
       </div>
     </div>
   )

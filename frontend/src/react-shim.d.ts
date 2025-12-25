@@ -1,9 +1,9 @@
 /// <reference types="vite/client" />
 
+/// <reference types="react" />
+
 declare module 'react' {
   import * as React from 'react';
-  export = React;
-  export as namespace React;
   
   namespace React {
     interface CSSProperties {
@@ -16,16 +16,11 @@ declare module 'react' {
       key: string | number | null;
     }
     
-    type ReactNode = ReactElement | string | number | boolean | null | undefined;
-    
-    interface Component<P = {}, S = {}, SS = any> {
-      props: P;
-      state: S;
+    interface ReactPortal extends ReactElement {
+      children?: ReactNode;
     }
     
-    interface Attributes {
-      key?: string | number | null;
-    }
+    type ReactNode = ReactElement | ReactPortal | readonly ReactNode[] | string | number | boolean | null | undefined;
     
     interface FormEvent<T = Element> {
       preventDefault(): void;
@@ -40,8 +35,14 @@ declare module 'react' {
     function useEffect(effect: () => void | (() => void), deps?: any[]): void;
     function useRef<T>(initialValue: T | null): { current: T | null };
     
-    const StrictMode: React.ComponentType<{ children?: ReactNode }>;
+    const StrictMode: any;
   }
+  
+  export type ReactNode = React.ReactNode;
+  export const useState: React.useState;
+  export const useEffect: React.useEffect;
+  export const useRef: React.useRef;
+  export const StrictMode: any;
   
   export = React;
   export as namespace React;
