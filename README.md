@@ -140,12 +140,39 @@ mongo --eval "db.adminCommand('ping')"
 
 ### 4. データのインポート
 
+#### サンプルデータのインポート（開発・テスト用）
+
 ```bash
 cd backend
 npm run import-data
 ```
 
 これにより、サンプルデータ（太宰治、夏目漱石、芥川龍之介の作品など）がMongoDBに投入されます。
+
+#### 実際の青空文庫データのインポート（本番用）
+
+実際の青空文庫の全データをインポートする場合：
+
+```bash
+cd backend
+npm run import-aozora
+```
+
+**オプション**:
+- `--refresh` または `-r`: 既存のデータを全て削除してからインポート（完全リフレッシュ）
+
+```bash
+npm run import-aozora -- --refresh
+```
+
+**注意**:
+- 実際の青空文庫データは数万件あるため、インポートには時間がかかります（10-30分程度）
+- データはGitHubから自動的にダウンロードされます
+- 初回インポート時は`--refresh`オプションを使用することを推奨します
+
+**参考**:
+- [db_importer](https://github.com/aozorahack/db_importer) - 青空文庫データインポートツール
+- [青空文庫のデータ構造について](https://qiita.com/ksato9700/items/48fd0eba67316d58b9d6) - データ構造の詳細
 
 ### 5. 開発サーバーの起動
 
