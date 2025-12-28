@@ -15,7 +15,7 @@ function App() {
       {
         id: '1',
         type: 'bot',
-        content: 'どんな情報から調べたいかを教えてください（作品名・作者など）',
+        content: 'どんな情報から調べたいか教えてください\n(作品名・作者など)',
         timestamp: new Date(),
       },
     ])
@@ -48,52 +48,64 @@ function App() {
       const authorsResponse = await searchAuthors(query)
       const authors: Author[] = authorsResponse.authors || []
 
-      // 検索結果メッセージを作成
-      let resultContent = ''
+      // 検索結果メッセージを作成（作品と作者を別々のメッセージとして追加）
+      const newMessages: Message[] = []
+      let messageIdCounter = Date.now() + 1
 
+      // 作品が見つかった場合
       if (books.length > 0) {
-        resultContent += `作品が見つかりました（${books.length}件）:\n\n`
-        books.slice(0, 5).forEach((book, index) => {
-          resultContent += `${index + 1}. ${book.title}\n`
-          resultContent += `   作者: ${book.author}\n`
+        let booksContent = `作品が見つかりました（${books.length}件）:\n\n`
+        books.forEach((book, index) => {
+          booksContent += `${index + 1}. ${book.title}\n`
+          booksContent += `   作者: ${book.author}\n`
           if (book.book_id) {
-            resultContent += `   ID: ${book.book_id}\n`
+            booksContent += `   ID: ${book.book_id}\n`
           }
-          resultContent += '\n'
+          booksContent += '\n'
         })
-        if (books.length > 5) {
-          resultContent += `他 ${books.length - 5} 件の作品があります。\n\n`
-        }
+
+        newMessages.push({
+          id: messageIdCounter.toString(),
+          type: 'bot',
+          content: booksContent,
+          timestamp: new Date(),
+          books: books,
+        })
+        messageIdCounter++
       }
 
+      // 作者が見つかった場合
       if (authors.length > 0) {
-        resultContent += `作者が見つかりました（${authors.length}件）:\n\n`
-        authors.slice(0, 5).forEach((author, index) => {
-          resultContent += `${index + 1}. ${author.name}\n`
+        let authorsContent = `作者が見つかりました（${authors.length}件）:\n\n`
+        authors.forEach((author, index) => {
+          authorsContent += `${index + 1}. ${author.name}\n`
           if (author.name_yomi) {
-            resultContent += `   読み: ${author.name_yomi}\n`
+            authorsContent += `   読み: ${author.name_yomi}\n`
           }
-          resultContent += '\n'
+          authorsContent += '\n'
         })
-        if (authors.length > 5) {
-          resultContent += `他 ${authors.length - 5} 人の作者がいます。\n\n`
-        }
+
+        newMessages.push({
+          id: messageIdCounter.toString(),
+          type: 'bot',
+          content: authorsContent,
+          timestamp: new Date(),
+          authors: authors,
+        })
+        messageIdCounter++
       }
 
+      // 両方とも見つからなかった場合
       if (books.length === 0 && authors.length === 0) {
-        resultContent = '検索結果が見つかりませんでした。別のキーワードで検索してみてください。'
+        newMessages.push({
+          id: messageIdCounter.toString(),
+          type: 'bot',
+          content: '検索結果が見つかりませんでした。別のキーワードで検索してみてください。',
+          timestamp: new Date(),
+        })
       }
 
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'bot',
-        content: resultContent,
-        timestamp: new Date(),
-        books: books.slice(0, 5),
-        authors: authors.slice(0, 5),
-      }
-
-      setMessages((prev: Message[]) => [...prev, botMessage])
+      setMessages((prev: Message[]) => [...prev, ...newMessages])
     } catch (error) {
       console.error('検索エラー:', error)
       const errorMessage: Message = {

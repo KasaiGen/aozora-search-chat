@@ -19,23 +19,40 @@ export default function ChatMessage({ message }: ChatMessageProps) {
                     {/* 作品リストの表示 */}
                     {message.books && message.books.length > 0 && (
                         <div className="mt-3 space-y-2">
-                            {message.books.map((book, index) => (
-                                <div
-                                    key={String(book.book_id || book.title || index)}
-                                    className={`p-3 rounded-lg text-sm ${
-                                        isUser
-                                            ? 'bg-blue-400/20'
-                                            : 'bg-gray-50 border border-gray-200'
-                                    }`}
-                                >
-                                    <div className={`font-semibold mb-1 ${isUser ? 'text-white' : 'text-gray-900'}`}>
-                                        {index + 1}. {book.title}
+                            {message.books.map((book, index) => {
+                                const bookUrl = book.card_url || book.html_url || book.text_url
+                                return (
+                                    <div
+                                        key={String(book.book_id || book.title || index)}
+                                        className={`p-3 rounded-lg text-sm ${
+                                            isUser
+                                                ? 'bg-blue-400/20'
+                                                : 'bg-gray-50 border border-gray-200'
+                                        }`}
+                                    >
+                                        <div className={`font-semibold mb-1 ${isUser ? 'text-white' : 'text-gray-900'}`}>
+                                            {index + 1}.{' '}
+                                            {bookUrl ? (
+                                                <a
+                                                    href={bookUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={`underline hover:opacity-80 ${
+                                                        isUser ? 'text-blue-100' : 'text-blue-600'
+                                                    }`}
+                                                >
+                                                    {book.title}
+                                                </a>
+                                            ) : (
+                                                book.title
+                                            )}
+                                        </div>
+                                        <div className={`text-xs ${isUser ? 'text-blue-100' : 'text-gray-600'}`}>
+                                            作者: {book.author}
+                                        </div>
                                     </div>
-                                    <div className={`text-xs ${isUser ? 'text-blue-100' : 'text-gray-600'}`}>
-                                        作者: {book.author}
-                                    </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
                     )}
 
