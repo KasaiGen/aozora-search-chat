@@ -180,7 +180,7 @@ npm run import-aozora -- --refresh
 npm run dev
 ```
 
-バックエンド: http://localhost:3001
+バックエンド: http://localhost:3002
 フロントエンド: http://localhost:5173
 
 ## 使用方法

@@ -37,7 +37,7 @@ npm run import-data
 npm run dev
 ```
 
-サーバーは http://localhost:3001 で起動します。
+サーバーは http://localhost:3002 で起動します。
 
 ## APIエンドポイント
 

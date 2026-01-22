@@ -7,7 +7,9 @@ import { searchBooks, searchAuthors, getBookById } from './routes/search.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+// NOTE: 3001 は他プロセス（Docker等）と衝突しやすいので、デフォルトは 3002 にする
+// 環境変数 PORT があればそちらを優先
+const PORT = process.env.PORT || 3002;
 
 // ミドルウェア
 app.use(cors());
